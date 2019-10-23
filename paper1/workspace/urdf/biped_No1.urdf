@@ -1,0 +1,268 @@
+<?xml version="1.0"?>
+<!--制作的第一个双足的urdf文件-->
+<robot name="biped-one">
+	<link name="torso-base">
+		<visual>
+			<geometry>
+                <box size="0.12 0.25 0.4"/>
+			</geometry>
+            <material name="blue">
+                <color rgba="0 0 .5 1"/>
+            </material>
+		</visual>
+        <collision>
+            <geometry>
+                <box size="0.12 0.25 0.4"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <!--mass value="20"/-->
+            <mass value="20"/>
+            <!--inertia ixx="0.37" ixy="0.0" ixz="0.0" iyy="0.29" iyz="0.0" izz="0.128"/-->
+            <inertia ixx="0.37" ixy="0.0" ixz="0.0" iyy="0.29" iyz="0.0" izz="0.128"/>
+        </inertial>
+	</link>
+
+    <!--***************左脚****************-->
+    <!--主要包括，外摆关节的转子以及大腿关节的定子，及其连接件-->
+    <link name="left-block">
+        <visual>
+            <geometry>
+                <box size="0.06 0.06 0.06"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <material name="white">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.06 0.06 0.06"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.5"/>
+            <inertia ixx="0.0003" ixy="0.0" ixz="0.0" iyy="0.0003" iyz="0.0" izz="0.0003"/>
+        </inertial>
+    </link>
+
+    <!--左腿的外摆关节，-->
+    <joint name="left_j1" type="continuous">
+        <axis xyz="1 0 0"/>
+        <parent link="torso-base"/>
+        <child link="left-block"/>
+        <origin rpy="0 0 0" xyz="0 0.12 -0.2"/>
+        <limit effort="100" velocity="100"/>
+        <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+
+    <!--左大腿关节，-->
+    <link name="left-thigh">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 0.5"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0.0 -0.25"/>
+            <material name="black">
+                <color rgba="0.5 0.5 0.5 0.8"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.05 0.05 0.5"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="2.0"/>
+            <inertia ixx="0.04208" ixy="0.0" ixz="0.0" iyy="0.04208" iyz="0.0" izz="0.00083"/>
+        </inertial>
+    </link>
+
+    <joint name="left_j2" type="continuous">
+        <axis xyz="0 1 0"/>
+        <parent link="left-block"/>
+        <child link="left-thigh"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <limit effort="100" velocity="100"/>
+        <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+
+    <link name="left-shank">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 0.5"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0.0 -0.25"/>
+            <material name="red">
+                <color rgba="0.5 0 0 0.8"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.05 0.05 0.5"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0.0 -0.25"/>
+        </collision>
+        <inertial>
+            <mass value="2.0"/>
+            <inertia ixx="0.04208" ixy="0.0" ixz="0.0" iyy="0.04208" iyz="0.0" izz="0.00083"/>
+        </inertial>
+    </link>
+
+    <joint name="left_j3" type="continuous">
+        <axis xyz="0 1 0"/>
+        <parent link="left-thigh"/>
+        <child link="left-shank"/>
+        <origin rpy="0 0 0" xyz="0 0 -0.5"/>
+        <limit effort="100" velocity="100"/>
+        <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+    <!--***********左足，是一个球形接触**************-->
+    <link name="left-foot">
+        <visual>
+            <geometry>
+                <sphere radius="0.025"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <material name="red">
+                <color rgba="0.5 0 0 0.8"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <sphere radius="0.025"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+        </inertial>
+    </link>
+
+    <joint name="left_j4" type="fixed">
+        <parent link="left-shank"/>
+        <child link="left-foot"/>
+        <origin rpy="0 0 0" xyz="0 0 -0.5"/>
+    </joint>
+
+    <!--***************右脚****************-->
+    <link name="right-block">
+        <visual>
+            <geometry>
+                <box size="0.06 0.06 0.06"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <material name="white">
+                <color rgba="1 1 1 1"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.06 0.06 0.06"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.5"/>
+            <inertia ixx="0.0003" ixy="0.0" ixz="0.0" iyy="0.0003" iyz="0.0" izz="0.0003"/>
+        </inertial>
+    </link>
+
+    <joint name="right_j1" type="continuous">
+        <axis xyz="1 0 0"/>
+        <parent link="torso-base"/>
+        <child link="right-block"/>
+        <origin rpy="0 0 0" xyz="0 -0.12 -0.2"/>
+        <limit effort="100" velocity="100"/>
+        <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+
+    <link name="right-thigh">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 0.5"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0.0 -0.25"/>
+            <material name="black">
+                <color rgba="0.5 0.5 0.5 0.8"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.05 0.05 0.5"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="2.0"/>
+            <inertia ixx="0.04208" ixy="0.0" ixz="0.0" iyy="0.04208" iyz="0.0" izz="0.00083"/>
+        </inertial>
+    </link>
+
+    <joint name="right_j2" type="continuous">
+        <axis xyz="0 1 0"/>
+        <parent link="right-block"/>
+        <child link="right-thigh"/>
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <limit effort="100" velocity="100"/>
+        <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+
+    <link name="right-shank">
+        <visual>
+            <geometry>
+                <box size="0.05 0.05 0.5"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0.0 -0.25"/>
+            <material name="red">
+                <color rgba="0.5 0 0 0.8"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.05 0.05 0.5"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0.0 -0.25"/>
+        </collision>
+        <inertial>
+            <mass value="2.0"/>
+            <inertia ixx="0.04208" ixy="0.0" ixz="0.0" iyy="0.04208" iyz="0.0" izz="0.00083"/>
+        </inertial>
+    </link>
+
+    <joint name="right_j3" type="continuous">
+        <axis xyz="0 1 0"/>
+        <parent link="right-thigh"/>
+        <child link="right-shank"/>
+        <origin rpy="0 0 0" xyz="0 0 -0.5"/>
+        <limit effort="100" velocity="100"/>
+        <joint_properties damping="0.0" friction="0.0"/>
+    </joint>
+
+    <link name="right-foot">
+        <visual>
+            <geometry>
+                <sphere radius="0.025"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <material name="red">
+                <color rgba="0.5 0 0 0.8"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <sphere radius="0.025"/>
+            </geometry>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0.0" izz="0.0001"/>
+        </inertial>
+    </link>
+
+    <joint name="right_j4" type="fixed">
+        <parent link="right-shank"/>
+        <child link="right-foot"/>
+        <origin rpy="0 0 0" xyz="0 0 -0.5"/>
+    </joint>
+</robot>
